@@ -12,7 +12,7 @@ import { useForm, FormProvider } from "react-hook-form";
 import { commerce } from "../../lib/commerce";
 import { FormInput } from "./";
 
-const ShippingForm = ({ checkoutToken }) => {
+const ShippingForm = ({ checkoutToken, next }) => {
 	const [shippingCountries, setShippingCountries] = useState([]);
 	const [shippingCountry, setShippingCountry] = useState("");
 	const [shippingDistricts, setShippingDistricts] = useState([]);
@@ -76,14 +76,23 @@ const ShippingForm = ({ checkoutToken }) => {
 	return (
 		<>
 			<FormProvider {...methods}>
-				<form onSubmit="">
+				<form
+					onSubmit={methods.handleSubmit((data) =>
+						next({
+							...data,
+							shippingCountry,
+							shippingDistrict,
+							shippingOption,
+						})
+					)}
+				>
 					<Grid container spacing={3}>
-						<FormInput name="firstName" label="First Name" />
-						<FormInput name="lastName" label="Last Name" />
-						<FormInput name="email" label="Email" />
-						<FormInput name="phone" label="Phone Number" />
-						<FormInput name="address1" label="Address 1" />
-						<FormInput name="address2" label="Address 2" />
+						<FormInput name="firstName" label="First Name" defaultValue="Jack" />
+						<FormInput name="lastName" label="Last Name" defaultValue="Smith" />
+						<FormInput name="email" label="Email" defaultValue="abc@gmail.com" />
+						<FormInput name="phone" label="Phone Number" defaultValue="112143" />
+						<FormInput name="address1" label="Address 1" defaultValue="409 Shady Pkwy" />
+						<FormInput name="address2" label="Address 2" defaultValue="Apt 404" />
 						<Grid item xs={12} sm={6}>
 							<InputLabel>Shipping Country</InputLabel>
 							<Select
