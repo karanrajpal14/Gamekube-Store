@@ -21,18 +21,17 @@ const Navbar = ({ cartCount }) => {
 	const isInCart = location.pathname !== "/cart";
 
 	const CartButton = () => (
-		<div className={classes.button}>
-			<IconButton
-				aria-label="Show cart items"
-				color="inherit"
-				component={Link}
-				to="/cart"
-			>
-				<Badge badgeContent={cartCount} color="secondary">
-					<ShoppingCart />
-				</Badge>
-			</IconButton>
-		</div>
+		<IconButton
+			className={classes.button}
+			aria-label="Show cart items"
+			color="inherit"
+			component={Link}
+			to="/cart"
+		>
+			<Badge badgeContent={cartCount} color="secondary">
+				<ShoppingCart />
+			</Badge>
+		</IconButton>
 	);
 
 	return (
@@ -48,7 +47,7 @@ const Navbar = ({ cartCount }) => {
 					>
 						Gamekube Store
 					</Typography>
-					<div className={classes.grow}></div>
+					<div className={classes.grow} />
 					{isInCart ? <CartButton /> : null}
 				</Toolbar>
 			</AppBar>
