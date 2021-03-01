@@ -12,7 +12,7 @@ import { useForm, FormProvider } from "react-hook-form";
 import { commerce } from "../../lib/commerce";
 import { FormInput } from "./";
 
-const ShippingForm = ({ checkoutToken, next }) => {
+const ShippingForm = ({ checkoutToken, nextStep }) => {
 	const [shippingCountries, setShippingCountries] = useState([]);
 	const [shippingCountry, setShippingCountry] = useState("");
 	const [shippingDistricts, setShippingDistricts] = useState([]);
@@ -78,7 +78,7 @@ const ShippingForm = ({ checkoutToken, next }) => {
 			<FormProvider {...methods}>
 				<form
 					onSubmit={methods.handleSubmit((data) =>
-						next({
+						nextStep({
 							...data,
 							shippingCountry,
 							shippingDistrict,
@@ -93,6 +93,7 @@ const ShippingForm = ({ checkoutToken, next }) => {
 						<FormInput name="phone" label="Phone Number" defaultValue="112143" />
 						<FormInput name="address1" label="Address 1" defaultValue="409 Shady Pkwy" />
 						<FormInput name="address2" label="Address 2" defaultValue="Apt 404" />
+						<FormInput name="zip" label="Zip / Postal Code" defaultValue="94013" />
 						<Grid item xs={12} sm={6}>
 							<InputLabel>Shipping Country</InputLabel>
 							<Select
