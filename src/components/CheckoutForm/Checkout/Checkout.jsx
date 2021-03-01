@@ -13,7 +13,7 @@ import useStyles from "./styles";
 import { commerce } from "../../../lib/commerce";
 import { ShippingForm, PaymentForm, Confirmation } from "../";
 
-const Checkout = ({ cart }) => {
+const Checkout = ({ cart, order, onCheckout, error }) => {
 	const classes = useStyles();
 	const [step, setStep] = useState(0);
 	const [checkoutToken, setCheckoutToken] = useState(null);
@@ -46,8 +46,14 @@ const Checkout = ({ cart }) => {
 
 	const steps = ["Shipping Information", "Payment", "Confirmation"];
 	const stepComponents = [
-		<ShippingForm checkoutToken={checkoutToken} next={next} />,
-		<PaymentForm />,
+		<ShippingForm checkoutToken={checkoutToken} nextStep={next} />,
+		<PaymentForm
+			checkoutToken={checkoutToken}
+			shippingData={shippingData}
+			previousStep={previousStep}
+			nextStep={nextStep}
+			onCheckout={onCheckout}
+		/>,
 		<Confirmation />,
 	];
 
