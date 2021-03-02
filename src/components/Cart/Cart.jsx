@@ -14,12 +14,13 @@ const Cart = ({
 	const isEmpty = !cart?.line_items?.length;
 
 	const EmptyCart = () => (
-		<Typography variant="subtitle1">
-			Your cart is empty.
-			<Link to="/" className={classes.link}>
-				Please add some items and come back.
-			</Link>
-		</Typography>
+		<Container>
+			<Typography variant="h4">Your cart is empty</Typography>
+			<Typography variant="h4">Please browse our store to add some and return</Typography>
+			<Button component={Link} to="/" variant="outlined">
+				Browse store
+			</Button>
+		</Container>
 	);
 
 	const FilledCart = () => (
@@ -35,7 +36,7 @@ const Cart = ({
 					</Grid>
 				))}
 			</Grid>
-			<div className={classes.cardDetails}>
+			<div className={classes.cartDetails}>
 				<Typography variant="h4">
 					Subtotal: {cart.subtotal.formatted_with_symbol}
 				</Typography>
@@ -69,8 +70,8 @@ const Cart = ({
 	return (
 		<Container>
 			<div className={classes.toolbar}>
-				<Typography gutterBottom className={classes.title} variant="h3">
-					Your Shopping Cart
+				<Typography gutterBottom className={classes.title} variant="h2">
+					Cart
 				</Typography>
 				{isEmpty ? <EmptyCart /> : <FilledCart />}
 			</div>

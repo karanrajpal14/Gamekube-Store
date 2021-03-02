@@ -5,14 +5,9 @@ import {
 	Toolbar,
 	IconButton,
 	Badge,
-	MenuItem,
-	Menu,
 	Typography,
-	CardActions,
 } from "@material-ui/core";
 import { ShoppingCart } from "@material-ui/icons";
-
-import logo from "../../assets/logo.png";
 import useStyles from "./styles";
 
 const Navbar = ({ cartCount }) => {

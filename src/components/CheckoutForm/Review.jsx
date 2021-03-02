@@ -2,8 +2,6 @@ import React from "react";
 import { Typography, List, ListItem, ListItemText, Divider } from "@material-ui/core";
 
 const Review = ({ checkoutToken, shippingData }) => {
-	console.log(checkoutToken);
-	console.log(shippingData);
 	return (
 		<>
 			<Typography variant="h6" gutterBottom>

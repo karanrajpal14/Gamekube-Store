@@ -38,11 +38,6 @@ const App = () => {
 		setCart(cart);
 	};
 
-	const refreshCart = async () => {
-		const newCart = await commerce.cart.refresh();
-		setCart(newCart);
-	};
-
 	const handleCheckout = async (checkoutTokenId, newOrderDetails) => {
 		try {
 			const incomingOrder = await commerce.checkout.capture(
@@ -50,6 +45,7 @@ const App = () => {
 				newOrderDetails
 			);
 			setOrder(incomingOrder);
+			setCart({});
 		} catch (error) {
 			setOrderErrorMessage(error.data.error.message);
 		}

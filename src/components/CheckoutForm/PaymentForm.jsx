@@ -30,8 +30,6 @@ const PaymentForm = ({
 			card: cardElement,
 		});
 
-		console.log(shippingData);
-
 		if (error) console.error(error);
 		else {
 			const orderDetails = {
@@ -67,21 +65,21 @@ const PaymentForm = ({
 					},
 				},
 			};
-
-			console.log("%%%%");
-			console.log(orderDetails);
-			console.log("%%%%");
-
-			onCheckout(checkoutToken.id, orderDetails);
+			onCheckout(checkoutToken?.id, orderDetails);
 
 			nextStep();
 		}
 	};
 	return (
 		<>
-			<Review checkoutToken={checkoutToken} shippingData={shippingData} />
+			<Review
+				checkoutToken={checkoutToken}
+				shippingData={shippingData}
+				shipping={shipping_with_symbol}
+				total={total_with_symbol}
+			/>
 			<Divider />
-			<Typography variant="h6" gutterBottom>
+			<Typography variant="h6" gutterBottom style={{ margin: "1em 0" }}>
 				Payment Method
 			</Typography>
 			<Elements stripe={stripePromise}>

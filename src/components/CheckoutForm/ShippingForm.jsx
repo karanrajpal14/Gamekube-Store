@@ -29,10 +29,6 @@ const ShippingForm = ({ checkoutToken, nextStep }) => {
 		);
 		setShippingCountries(countries);
 		setShippingCountry(Object.keys(countries)[0]);
-		setShippingDistricts([]);
-		setShippingDistrict("");
-		setShippingOptions([]);
-		setShippingOption("");
 	};
 
 	const fetchShippingDistricts = async (countryCode) => {
@@ -57,20 +53,35 @@ const ShippingForm = ({ checkoutToken, nextStep }) => {
 	};
 
 	useEffect(() => {
+		setShippingCountries([]);
+		setShippingCountry("");
+		setShippingDistricts([]);
+		setShippingDistrict("");
+		setShippingOptions([]);
+		setShippingOption("");
 		fetchShippingCountries(checkoutToken?.id);
 	}, []);
 
 	useEffect(() => {
-		if (shippingCountry) fetchShippingDistricts(shippingCountry);
+		if (shippingCountry) {
+			setShippingDistricts([]);
+			setShippingDistrict("");
+			setShippingOptions([]);
+			setShippingOption("");
+			fetchShippingDistricts(shippingCountry);
+		}
 	}, [shippingCountry]);
 
 	useEffect(() => {
-		if (shippingDistrict)
+		if (shippingDistrict) {
+			setShippingOptions([]);
+			setShippingOption("");
 			fetchShippingOptions(
 				checkoutToken?.id,
 				shippingCountry,
 				shippingDistrict
 			);
+		}
 	}, [shippingCountry, shippingDistrict]);
 
 	return (
