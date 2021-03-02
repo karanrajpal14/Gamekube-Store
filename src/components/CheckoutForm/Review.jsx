@@ -1,7 +1,14 @@
 import React from "react";
-import { Typography, List, ListItem, ListItemText, Divider } from "@material-ui/core";
+import {
+	Typography,
+	List,
+	ListItem,
+	ListItemText,
+	Divider,
+	Container,
+} from "@material-ui/core";
 
-const Review = ({ checkoutToken, shippingData }) => {
+const Review = ({ checkoutToken, shippingData, shipping, total }) => {
 	return (
 		<>
 			<Typography variant="h6" gutterBottom>
@@ -20,12 +27,40 @@ const Review = ({ checkoutToken, shippingData }) => {
 					</ListItem>
 				))}
 				<ListItem style={{ fontWeight: 900 }}>
-					<ListItemText primary="Total" />
+					<ListItemText primary="Subtotal" />
 					<Typography variant="subtitle1">
 						{checkoutToken.live.subtotal.formatted_with_symbol}
 					</Typography>
 				</ListItem>
+				<ListItem style={{ fontWeight: 900 }}>
+					<ListItemText primary="Shipping" />
+					<Typography variant="subtitle1">
+						{shipping}
+					</Typography>
+				</ListItem>
+				<ListItem style={{ fontWeight: 900 }}>
+					<ListItemText primary="Total" />
+					<Typography variant="subtitle1">
+						{total}
+					</Typography>
+				</ListItem>
 			</List>
+			<Divider />
+			<Typography variant="h6" gutterBottom style={{ margin: "1em 0" }}>
+				Shipping Information
+			</Typography>
+			<Container>
+				<Typography>
+					{shippingData?.firstName} {shippingData?.lastName}
+				</Typography>
+				<Typography>
+					{shippingData?.address1} {shippingData?.address2}
+				</Typography>
+				<Typography>
+					{shippingData?.shippingCountry}-
+					{shippingData?.shippingDistrict} {shippingData?.zip}
+				</Typography>
+			</Container>
 		</>
 	);
 };

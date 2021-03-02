@@ -1,5 +1,12 @@
 import React from "react";
-import { Typography, Button, Divider } from "@material-ui/core";
+import {
+	Typography,
+	Button,
+	Divider,
+	Grid,
+	Container,
+} from "@material-ui/core";
+import MuiAlert from "@material-ui/lab/Alert";
 import {
 	CardElement,
 	Elements,
@@ -8,9 +15,13 @@ import {
 import { loadStripe } from "@stripe/stripe-js";
 
 import { Review } from "./";
-import { CheckSharp } from "@material-ui/icons";
+import _ from "lodash";
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PK);
+
+function Alert(props) {
+	return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const PaymentForm = ({
 	checkoutToken,
@@ -18,7 +29,36 @@ const PaymentForm = ({
 	previousStep,
 	nextStep,
 	onCheckout,
+	timeout,
 }) => {
+	const stripeCardStyle = {
+		style: {
+			base: {
+				fontSize: "18px",
+				color: "#424770",
+				"::placeholder": {
+					color: "#aab7c4",
+				},
+			},
+			invalid: {
+				color: "#9e2146",
+			},
+		},
+	};
+
+	const selectedShippingMethod = _.find(checkoutToken.shipping_methods, [
+		"id",
+		shippingData.shippingOption,
+	]);
+
+	const symbol = checkoutToken.live.currency.symbol;
+	const subtotal = parseFloat(checkoutToken.live.subtotal.formatted);
+	const shipping = parseFloat(selectedShippingMethod.price.formatted);
+	const shipping_with_symbol =
+		selectedShippingMethod.price.formatted_with_symbol;
+	const total = subtotal + shipping;
+	const total_with_symbol = symbol + total;
+
 	const handleSubmit = async (event, elements, stripe) => {
 		event.preventDefault();
 
@@ -88,23 +128,44 @@ const PaymentForm = ({
 						<form
 							onSubmit={(e) => handleSubmit(e, elements, stripe)}
 						>
-							<CardElement />
-							<div>
-								<Button
-									variant="outlined"
-									onClick={previousStep}
+							<Container style={{ margin: "2em 0" }}>
+								<CardElement options={stripeCardStyle} />
+								<Alert
+									variant="filled"
+									severity="info"
+									style={{ margin: "2em 0" }}
 								>
-									Back
-								</Button>
-								<Button
-									variant="contained"
-									disabled={!stripe}
-									type="submit"
-									color="primary"
-								>
-									{`Pay ${checkoutToken.live.subtotal.formatted_with_symbol}`}
-								</Button>
-							</div>
+									<Typography>
+										For testing, you can input:
+									</Typography>
+									<Typography>
+										Card Number: 4242 4242 4242 4242
+									</Typography>
+									<Typography>Exp Date: 04/24</Typography>
+									<Typography>CVC: 242</Typography>
+									<Typography>Zip: 42424</Typography>
+								</Alert>
+							</Container>
+							<Grid container spacing={2}>
+								<Grid item>
+									<Button
+										variant="outlined"
+										onClick={previousStep}
+									>
+										Back
+									</Button>
+								</Grid>
+								<Grid item>
+									<Button
+										variant="contained"
+										disabled={!stripe}
+										type="submit"
+										color="primary"
+									>
+										{`Pay ${total_with_symbol}`}
+									</Button>
+								</Grid>
+							</Grid>
 						</form>
 					)}
 				</ElementsConsumer>

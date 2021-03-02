@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
+import { Link, useHistory } from "react-router-dom";
 import {
 	Paper,
 	Stepper,
 	Step,
 	StepLabel,
 	Typography,
-	CircularProgress,
-	Divider,
 	Button,
+	CssBaseline,
 } from "@material-ui/core";
 import useStyles from "./styles";
 import { commerce } from "../../../lib/commerce";
@@ -15,20 +15,26 @@ import { ShippingForm, PaymentForm, Confirmation } from "../";
 
 const Checkout = ({ cart, order, onCheckout, error }) => {
 	const classes = useStyles();
+	const history = useHistory();
 	const [step, setStep] = useState(0);
 	const [checkoutToken, setCheckoutToken] = useState(null);
 	const [shippingData, setShippingData] = useState({});
 
 	useEffect(() => {
 		const generateToken = async () => {
-			try {
-				const token = await commerce.checkout.generateToken(cart?.id, {
-					type: "cart",
-				});
-				console.log(token);
-				setCheckoutToken(token);
-			} catch (error) {
-				console.error(error);
+			if (cart && cart.id) {
+				try {
+					const token = await commerce.checkout.generateToken(
+						cart.id,
+						{
+							type: "cart",
+						}
+					);
+					setCheckoutToken(token);
+				} catch (error) {
+					console.log(error);
+					history.push("/");
+				}
 			}
 		};
 		generateToken();
@@ -54,11 +60,22 @@ const Checkout = ({ cart, order, onCheckout, error }) => {
 			nextStep={nextStep}
 			onCheckout={onCheckout}
 		/>,
-		<Confirmation />,
+		<Confirmation order={order} />,
 	];
+
+	if (error) {
+		<>
+			<Typography variant="h5">Error: {error}</Typography>
+			<br />
+			<Button variant="outlined" component={Link} to="/">
+				Browse more amazing products
+			</Button>
+		</>;
+	}
 
 	return (
 		<>
+			<CssBaseline />
 			<div className={classes.toolbar} />
 			<main className={classes.layout}>
 				<Paper className={classes.paper}>
